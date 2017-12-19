@@ -3,7 +3,8 @@
 #
 #      ./makeflash.sh [-C size] <output.img>
 #
-MKFLASH_TAG="$(linuxkit pkg show-tag pkg/mkflash)-amd64"
+ARCH=$(uname -m|sed s/aarch64/arm64/|sed s/x86_64/amd64/)
+MKFLASH_TAG="$(linuxkit pkg show-tag pkg/mkflash)-$ARCH"
 
 if [ "$1" = "-C" ]; then
     SIZE=$2

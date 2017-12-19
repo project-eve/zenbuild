@@ -57,9 +57,18 @@ RUN case $(uname -m) in \
     make defconfig && \
     make oldconfig
 
-RUN mkdir -p /out/boot
+RUN make 
 
-RUN make && cp xen.gz /out/boot/xen.gz
+RUN case $(uname -m) in \
+    x86_64) \
+	mkdir -p /out/boot; \
+	cp xen.gz /out/boot/xen.gz; \
+	;; \
+    aarch64) \
+	mkdir -p /out/boot/efi/EFI; \
+	cp xen /out/boot/efi/EFI/xen; \
+	;; \
+    esac 
 
 FROM scratch
 ENTRYPOINT []

@@ -2,9 +2,19 @@
 PATH := $(CURDIR)/../build-tools/bin:$(PATH)
 LINUXKIT_OPTS= --disable-content-trust
 
-PKGS = grub xen kernel kmod_pfring xen-tools dnsmasq gpt-tools dom0-ztools	\
+BUILDARCH ?= $(shell uname -m) # The target CPU architecture == host arch if unspecified.
+
+ifneq ($(strip ${BUILDARCH}),aarch64)
+PKGS += grub dnsmasq gpt-tools
+endif
+
+PKGS =  xen kernel kmod_pfring xen-tools dom0-ztools	\
 	test-microsvcs qrexec-lib qrexec-dom0 wwan wlan	\
-	zedctr test-conf mkrootfs-ext4 mkrootfs-squash mkflash
+	zedctr test-conf mkrootfs-ext4 mkrootfs-squash
+
+ifneq ($(strip ${BUILDARCH}),aarch64)
+PKGS += mkflash
+endif
 
 .PHONY: push force-push build forcebuild show-tag clean dockerfiles
 

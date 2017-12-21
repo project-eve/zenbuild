@@ -18,7 +18,7 @@ plugin_tag() {
   fi
 }
 
-ARCH=amd64
+ARCH=$(uname -m|sed s/aarch64/arm64/)
 
 KERNEL_TAG=$(linuxkit_tag pkg/kernel)-$ARCH
 XENTOOLS_TAG=$(linuxkit_tag pkg/xen-tools)-$ARCH

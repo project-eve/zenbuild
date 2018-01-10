@@ -1,0 +1,32 @@
+diff --git a/kernel/Makefile b/kernel/Makefile
+index 66c7a83..fc3042a 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -45,7 +45,8 @@ all: Makefile pf_ring.c linux/pf_ring.h
+ #		echo "*"; \
+ #		echo "*********************************************"; \
+ #	fi
+-	make -C /lib/modules/$(BUILD_KERNEL)/build SUBDIRS=${HERE} EXTRA_CFLAGS='${EXTRA_CFLAGS}' modules
++	#make -C /lib/modules/$(BUILD_KERNEL)/build SUBDIRS=${HERE} EXTRA_CFLAGS='${EXTRA_CFLAGS}' modules
++	make -C ../../linux SUBDIRS=${HERE} EXTRA_CFLAGS='${EXTRA_CFLAGS}' modules
+ 
+ dkms-deb:
+ 	sudo make -f Makefile.dkms deb
+@@ -54,12 +55,15 @@ dkms-rpm:
+ 	sudo make -f Makefile.dkms rpm
+ 
+ clean:
+-	make -C /lib/modules/$(BUILD_KERNEL)/build SUBDIRS=$(HERE) clean
++	#make -C /lib/modules/$(BUILD_KERNEL)/build SUBDIRS=$(HERE) clean
++	make -C ../../linux SUBDIRS=$(HERE) clean
+ 	\rm -f *~ Module.symvers  Module.markers  modules.order *#
+ 
+-install:
++install-module:
+ 	mkdir -p $(INSTDIR)
+ 	cp *.ko $(INSTDIR)
++
++install: install-module
+ 	mkdir -p $(DESTDIR)/usr/include/linux
+ 	cp linux/pf_ring.h $(DESTDIR)/usr/include/linux
+ 	@if test -d ${TARGETDIR}; then \

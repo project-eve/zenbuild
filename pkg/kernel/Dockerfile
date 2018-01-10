@@ -141,6 +141,19 @@ RUN if [ "${KERNEL_SERIES}" != "4.4.x" ]; then \
        cp /build/perf/perf /out; \
      fi
 
+# pf_ring build
+WORKDIR /
+RUN git clone -b 6.6.0-stable https://github.com/ntop/PF_RING
+COPY patches-pf_ring /patches-pf_ring
+WORKDIR /PF_RING
+RUN set -e && for patch in /patches-pf_ring/*.patch; do \
+        echo "Applying $patch"; \
+        patch -p1 < "$patch"; \
+    done
+WORKDIR /PF_RING/kernel
+# Hack! Hardcoding the path to the kernel modules directory
+RUN make INSTDIR=/tmp/pf_ring/lib/modules/4.9.51-linuxkit/kernel/drivers/net all install-module && cd /tmp/pf_ring && tar -f /out/kernel.tar -r lib
+
 FROM scratch
 ENTRYPOINT []
 CMD []

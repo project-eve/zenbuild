@@ -95,17 +95,19 @@ RUN case $(uname -m) in \
     if [ -z "${EXTRA}" ]; then diff .config ${KERNEL_DEF_CONF}; fi
 
 # Kernel
+RUN mkdir -p /out/boot
+
 RUN make -j "$(getconf _NPROCESSORS_ONLN)" KCFLAGS="-fno-pie" && \
     case $(uname -m) in \
     x86_64) \
-        cp arch/x86_64/boot/bzImage /out/boot.vmlinux; \
+        cp arch/x86_64/boot/bzImage /out/boot/boot.kernel; \
         ;; \
     aarch64) \
-        cp arch/arm64/boot/Image.gz /out/boot.vmlinux; \
+        cp arch/arm64/boot/Image.gz /out/boot/boot.kernel; \
         ;; \
     esac && \
     cp System.map /out && \
-    ([ "${EXTRA}" = "-dbg" ] && cp vmlinux /out || true)
+    ([ "${EXTRA}" = "-dbg" ] && cp vmlinux /out/boot/boot.kernel || true)
 
 # Modules
 RUN make INSTALL_MOD_PATH=/tmp/kernel-modules modules_install && \

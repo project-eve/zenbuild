@@ -1,9 +1,14 @@
 # disable content trust for now
 LINUXKIT_OPTS= --disable-content-trust
 
-PKGS = grub xen kernel xen-tools dnsmasq dom0-ztools test-cert	\
-	test-microsvcs qrexec-lib qrexec-dom0 wwan wlan		\
-	mkimage-iso-efi mkimage-raw-efi mkrootfs-ext4 mkflash
+# Boot related
+PKGS += boot grub xen kernel
+# Userland tools
+PKGS += kexec-tools xen-tools dom0-ztools qrexec-lib qrexec-dom0
+# Zededa
+PKGS += dnsmasq wwan wlan #test-microsvcs test-cert
+# Image related
+PKGS += mkimage-iso-efi mkimage-raw-efi mkrootfs-ext4 mkflash
 
 .PHONY: push force-push build forcebuild show-tag clean dockerfiles
 

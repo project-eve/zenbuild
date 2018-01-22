@@ -53,11 +53,11 @@ set timeout=5
 set gfxpayload=text
 menuentry 'LinuxKit Image' {
 	multiboot2 /xen.gz
-	module2 /kernel console=tty0 ${CMDLINE} text
+	module2 /boot.kernel console=tty0 ${CMDLINE} text
 }
 menuentry 'LinuxKit Image on QEMU' {
 	multiboot2 /xen.gz clocksource=pit console=com1
-	module2 /kernel console=hvc0 clocksource=jiffies `echo ${CMDLINE} | sed -e 's#sdb#sda#'` text
+	module2 /boot.kernel console=hvc0 clocksource=jiffies `echo ${CMDLINE} | sed -e 's#sdb#sda#'` text
 }
 EOF
 

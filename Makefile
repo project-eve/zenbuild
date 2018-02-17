@@ -20,7 +20,8 @@ run:
 				-net nic,vlan=0 -net user,id=eth0,vlan=0,net=192.168.1.0/24,dhcpstart=192.168.1.10,hostfwd=tcp::2222-:22 \
 				-net nic,vlan=1 -net user,id=eth1,vlan=1,net=192.168.2.0/24,dhcpstart=192.168.2.10
 run-fallback:
-	qemu-system-x86_64 --bios ./bios/OVMF.fd -m 4096 -cpu SandyBridge -serial mon:stdio -hda fallback.img -redir tcp:2222::22
+	qemu-system-x86_64 --bios ./bios/OVMF.fd -m 4096 -cpu SandyBridge -serial mon:stdio -hda fallback.img -redir tcp:2222::22 \
+				-device i6300esb,id=watchdog0 -watchdog-action reset
 
 zededa-container/Dockerfile: pkgs parse-pkgs.sh zededa-container/Dockerfile.in
 	./parse-pkgs.sh zededa-container/Dockerfile.in > zededa-container/Dockerfile

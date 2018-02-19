@@ -14,7 +14,7 @@ CONF_FILE=/parts/config.img
 mkdir -p /parts
 [ -t 0 ] || (cd /parts; bsdtar xzf -)
 
-IMAGE_SIZE=$(stat -c %s "$IMGA_FILE")
+IMAGE_SIZE=$(( 650 * 1024 * 1024 ))
 
 # (x+1024)/1024*1024 rounds up to multiple of 1024KB, or 2048
 # sectors some firmwares get confused if the partitions are not

@@ -7,15 +7,16 @@ SYNOPSIS
 DESCRIPTION
 	zboot watchdog is a subset of the zboot boot time control API
 	It allows callers to manipulate a named watchdog device.
+
 	If multiple watchdog devices are exported by the kernel, multiple
 	devices may be manipulated by callers simultaneously.
 
-	Each device is specified by the "Identity" which wdctl(8) knows about.
+	Each device is specified by the "Identity" which wdctl(8) can query.
 	To find out your device identity, the following command could help:
 	# wdctl |grep Identity|tr -s ' '|cut -f 2 -d ' '
 
-	However, each device has state specific constraints to what commands
-	it responds to successfully.
+	However, each device has state specific constraints as to what 
+	commands it responds to successfully.
 
 DEVICE COMMANDS
 	The following commands may be used on watchdog devices. All devices

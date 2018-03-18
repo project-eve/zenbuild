@@ -28,7 +28,7 @@ DEVICE COMMANDS
 		Returns EINVAL on invalid timeout value.
 	start
 		Start the watchdog timer. Once the timer has been started, it
-		will reboot the system unless reboot (see below) is called 
+		will reboot the system unless tickle (see below) is called 
 		within the timeout of the watchdog.
 
 	stop
@@ -59,6 +59,7 @@ SEE ALSO
 AUTHORS
 	The zboot watchdog API namespace was first specified by 
 	Gianluca Guida <gianluca@zededa.com>
+
 	It was embellished and implemented by
 	Cherry G. Mathew <cherry@zededa.com>
 

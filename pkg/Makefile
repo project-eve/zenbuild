@@ -10,6 +10,7 @@ endif
 
 PKGS =  xen kernel kmod_pfring xen-tools dom0-ztools	\
 	test-microsvcs qrexec-lib qrexec-dom0 wwan wlan	\
+	watchdog \
 	zedctr test-conf mkrootfs-ext4 mkrootfs-squash
 
 ifneq ($(strip ${BUILDARCH}),aarch64)

@@ -1,0 +1,13 @@
+--- a/include/sundries.h	2016-02-26 12:05:00.000000000 +0000
++++ b/include/sundries.h	2018-03-19 08:39:05.751422769 +0000
+@@ -9,9 +9,7 @@
+ #include <signal.h>
+ #include <stdarg.h>
+ #include <stdlib.h>
+-#if !defined(bool_t) && !defined(__GLIBC__)
+-#include <rpc/types.h>
+-#endif
++#include <tirpc/rpc/types.h>
+ 
+ extern int mount_mount_quiet;
+ extern int mount_verbose;

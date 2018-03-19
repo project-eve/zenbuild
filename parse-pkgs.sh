@@ -18,7 +18,7 @@ plugin_tag() {
   fi
 }
 
-ARCH=amd64
+ARCH=$(uname -m|sed s/aarch64/arm64/|sed s/x86_64/amd64/)
 
 KERNEL_TAG=$(linuxkit_tag pkg/kernel)-$ARCH
 KMOD_PFRING_TAG=$(linuxkit_tag pkg/kmod_pfring)-$ARCH

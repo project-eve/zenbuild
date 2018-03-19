@@ -22,4 +22,8 @@ case $1 in
     *) IMAGE=$PWD/$IMAGE;;
 esac
 
+# If we're a non-root user, the bind mount gets permissions sensitive.
+# So we go docker^Wcowboy style
+chmod ugo+w $IMAGE
+
 docker run --privileged -v $IMAGE:/config.img -i ${MKCONFIG_TAG} /config.img

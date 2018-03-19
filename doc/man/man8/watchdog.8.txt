@@ -1,0 +1,72 @@
+NAME
+	zboot watchdog -- shell based API to manipulate the system watchdog timer
+
+SYNOPSIS
+	zboot watchdog device command
+
+DESCRIPTION
+	zboot watchdog is a subset of the zboot boot time control API
+	It allows callers to manipulate a named watchdog device.
+
+	If multiple watchdog devices are exported by the kernel, multiple
+	devices may be manipulated by callers simultaneously.
+
+	Each device is specified by the "Identity" which wdctl(8) can query.
+	To find out your device identity, the following command could help:
+	# wdctl |grep Identity|tr -s ' '|cut -f 2 -d ' '
+
+	However, each device has state specific constraints as to what 
+	commands it responds to successfully.
+
+DEVICE COMMANDS
+	The following commands may be used on watchdog devices. All devices
+	are expected to independantly support every command, with identical
+	semantics.
+
+	reset timeout
+		Reset the watchdog timer to given timeout.
+		Returns EINVAL on invalid timeout value.
+	start
+		Start the watchdog timer. Once the timer has been started, it
+		will reboot the system unless tickle (see below) is called 
+		within the timeout of the watchdog.
+
+	stop
+		Stop the watchdog timer. Once stopped, no tickles are expected
+		by this device. The current timeout value is not preserved
+		and should not be expected to be retained on the next reset or
+		start.
+
+	tickle
+		Tickle the watchdog timer. If done within timeout, this prevents
+		a system reboot.
+
+RETURN VALUES
+	zboot watchdog will return 0 on success. Otherwise one of the error values
+	mentioned in section ERRORS, is returned.
+
+ERRORS
+	[ENODEV]	The given device does not exist.
+	[EINVAL]	For the reset command, the given timeout is out of range 
+			or invalid.
+
+FILES
+	/dev/watchdog
+
+SEE ALSO
+	zboot(8) wdctl(8) watchdog(8)
+
+AUTHORS
+	The zboot watchdog API namespace was first specified by 
+	Gianluca Guida <gianluca@zededa.com>
+
+	It was embellished and implemented by
+	Cherry G. Mathew <cherry@zededa.com>
+
+	This utility is part of the zboot suite and is
+	Copyrighted by Zededa Inc.
+
+BUGS
+	The zboot watchdog script depends on wdctl(8). This may or may not be 
+	a good thing.
+	

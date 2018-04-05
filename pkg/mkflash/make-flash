@@ -4,15 +4,20 @@ set -ex
 
 IMGFILE=$1
 
-ESP_FILE=/parts/efifs.img
-IMGA_FILE=/parts/rootfs.img
-CONF_FILE=/parts/config.img
-
 #
 # Step 1: Extract partitions from stdin
 #
 mkdir -p /parts
 [ -t 0 ] || (cd /parts; bsdtar xzf -)
+
+ESP_FILE=/parts/efifs.img
+IMGA_FILE=`echo /parts/rootfs*.img | cut -f1 -d\ ` 
+CONF_FILE=/parts/config.img
+
+#
+# Step 1.1: FIXME: this is a horrible hack that needs to go away ASAP
+#
+[ -f /parts/grub.tar ] && (rm -rf /efifs/* ; tar -C /efifs -xf /parts/grub.tar)
 
 IMAGE_SIZE=$(( 300 * 1024 * 1024 ))
 

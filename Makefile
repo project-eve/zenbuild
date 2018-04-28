@@ -3,6 +3,8 @@ PATH := $(CURDIR)/build-tools/bin:$(PATH)
 # How large to we want the disk to be in Mb
 MEDIA_SIZE=700
 
+CONF_DIR=conf
+
 ZARCH=$(shell uname -m)
 DOCKER_ARCH_TAG_aarch64=arm64
 DOCKER_ARCH_TAG_x86_64=amd64
@@ -94,7 +96,7 @@ rootfs.img: images/fallback.yml
 	./makerootfs.sh images/fallback.yml squash rootfs.img
 
 config.img:
-	./maketestconfig.sh config.img
+	./maketestconfig.sh $(CONF_DIR) config.img
 
 fallback.img: rootfs.img config.img
 	tar c rootfs.img config.img | ./makeflash.sh -C ${MEDIA_SIZE} $@
@@ -119,6 +121,9 @@ installer.img: images/installer.yml pkg_installer
 publish: Makefile rootfs.img config.img fallback.img installer.iso bios/OVMF.fd
 	cp $^ build-pkgs/zenix
 	make -C build-pkgs BUILD-PKGS=zenix LINUXKIT_OPTS="--disable-content-trust --disable-cache --force" $(DEFAULT_PKG_TARGET)
+
+pkg/%: FORCE
+	make -C pkg PKGS=$(notdir $@) LINUXKIT_OPTS="--disable-content-trust --disable-cache --force" $(DEFAULT_PKG_TARGET)
 
 .PHONY: FORCE
 FORCE:

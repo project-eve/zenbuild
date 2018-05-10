@@ -54,6 +54,8 @@ INSTALLER_TAG=$(linuxkit_tag pkg/installer)-$ARCH
 # images lacking functionality.
 ZTOOLS_TAG=${ZTOOLS_TAG:-$(plugin_tag zededa/ztools:latest)}
 
+[ $# -eq 1 ] && INFILE=$1
+
 sed -e "s#KERNEL_TAG#"$KERNEL_TAG"#" \
     -e "s#XENTOOLS_TAG#"$XENTOOLS_TAG"#" \
     -e "s#DOM0ZTOOLS_TAG#"$DOM0ZTOOLS_TAG"#" \
@@ -72,4 +74,4 @@ sed -e "s#KERNEL_TAG#"$KERNEL_TAG"#" \
     -e "s#KMOD_PFRING_TAG#"$KMOD_PFRING_TAG"#" \
     -e "s#MKFLASH_TAG#"$MKFLASH_TAG"#" \
     -e "s#INSTALLER_TAG#"$INSTALLER_TAG"#" \
-    $1
+    $INFILE

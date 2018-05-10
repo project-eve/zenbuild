@@ -71,13 +71,13 @@ build-pkgs: build-tools
 # Finally, we only forcefully rebuild the zedctr IF either docker pull brught a new image or ZTOOLS_TAG was given 
 zedctr-workaround:
 	@if [ -z "$$ZTOOLS_TAG" ]; then \
-	  docker pull `bash -c "./parse-pkgs.sh <(echo ZTOOLS_TAG)"` | tee /dev/tty | grep -q 'Downloaded newer image' ;\
+	  docker pull `sh -c "echo ZTOOLS_TAG | ./parse-pkgs.sh"` | tee /dev/tty | grep -q 'Downloaded newer image' ;\
 	else \
 	  date +%s > pkg/zedctr/trigger ;\
         fi ; if [ $$? -eq 0 ]; then \
 	  make -C pkg PKGS=zedctr LINUXKIT_OPTS="--disable-content-trust --force --disable-cache" $(DEFAULT_PKG_TARGET) ;\
 	else \
-	  docker pull `bash -c "./parse-pkgs.sh <(echo ZEDEDA_TAG)"` || : ;\
+	  docker pull `sh -c "echo ZEDEDA_TAG | ./parse-pkgs.sh"` || : ;\
         fi
 
 pkgs: build-tools build-pkgs zedctr-workaround

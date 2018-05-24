@@ -52,7 +52,7 @@ INSTALLER_TAG=$(linuxkit_tag pkg/installer)-$ARCH
 # our build easier. WARNING: it also means if you're
 # not logged into the Docker hub you may see final
 # images lacking functionality.
-ZTOOLS_TAG=${ZTOOLS_TAG:-$(plugin_tag zededa/ztools:0.3.0)}
+ZTOOLS_TAG=${ZTOOLS_TAG:-$(plugin_tag zededa/ztools:0.3.1)}
 
 sed -e "s#KERNEL_TAG#"$KERNEL_TAG"#" \
     -e "s#XENTOOLS_TAG#"$XENTOOLS_TAG"#" \

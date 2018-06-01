@@ -1,6 +1,6 @@
 kernel:
   image: KERNEL_TAG
-  cmdline: "rootdelay=3"
+  cmdline: "rootdelay=3 intel_iommu=on video=vesafb:off,efifb:off nomodeset"
 init:
   - GRUB_TAG
   - DTREES_TAG

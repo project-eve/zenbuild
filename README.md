@@ -23,19 +23,19 @@ If you're on MacOS the following steps should get you all the dependencies:
   ```
   https://brew.sh/
   ```
-  3. Add linuxkit tap to brew if needed
-
-  ```
-  brew tap linuxkit/linuxkit
-  ```
-  4. Brew install linuxkit, moby and qemu.
+  3. Brew install qemu.
 
   ```
   $ brew install qemu linuxkit moby
   ```
 
-Type `make fallback.img` in the source directory . This will
-download the relevant dockers from docker hub and create a bootable
+Build both the build-tools as well as the fallback image in the source directory:
+
+```
+make build-tools
+make fallback.img
+```
+This will download the relevant dockers from docker hub and create a bootable
 image 'fallback.img'.
 
 Please note that not all containers will be fetched from the docker

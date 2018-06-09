@@ -26,7 +26,7 @@ If you're on MacOS the following steps should get you all the dependencies:
   3. Brew install qemu.
 
   ```
-  $ brew install qemu linuxkit moby
+  $ brew install qemu
   ```
 
 Build both the build-tools as well as the fallback image in the source directory:

@@ -14,10 +14,9 @@ RUN apk add --no-cache \
     linux-headers \
     tar
 
+WORKDIR /tmp/strongswan
 RUN mkdir -p /tmp/strongswan
 RUN mkdir -p /out
-
-WORKDIR /tmp/strongswan
 
 RUN apk --update add build-base \
             ca-certificates \
@@ -30,7 +29,6 @@ RUN apk --update add build-base \
 
 RUN  curl -Lo /tmp/strongswan/strongswan.tar.bz2 $STRONGSWAN_RELEASE 
 RUN  tar --strip-components=1 -C /tmp/strongswan -xjf /tmp/strongswan/strongswan.tar.bz2
-RUN  cd /tmp/strongswan
 RUN  ./configure --prefix=/usr \
             --sysconfdir=/etc \
             --libexecdir=/usr/lib \
@@ -67,9 +65,6 @@ RUN  ./configure --prefix=/usr \
             --disable-static
 RUN    make 
 RUN    make install DESTDIR=/out
-RUN    rm -rf /tmp/strongswan
-RUN    apk del build-base curl-dev openssl-dev
-RUN    rm -rf /var/cache/apk/*
 
 FROM scratch
 ENTRYPOINT []

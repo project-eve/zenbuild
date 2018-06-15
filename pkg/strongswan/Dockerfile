@@ -29,16 +29,16 @@ ENV CONFIGURE_OPTS --prefix=/usr \
             --enable-openssl \
             --enable-sha3 \
             --enable-shared \
-            --disable-aes \
-            --disable-des \
+            --enable-aes \
+            --enable-des \
             --disable-gmp \
-            --disable-hmac \
-            --disable-ikev1 \
-            --disable-md5 \
-            --disable-rc2 \
-            --disable-sha1 \
-            --disable-sha2 \
-            --disable-static
+            --enable-hmac \
+            --enable-ikev1 \
+            --enable-md5 \
+            --enable-rc2 \
+            --enable-sha1 \
+            --enable-sha2 \
+            --enable-static
 
 RUN apk add --no-cache \
     gcc \

@@ -69,7 +69,7 @@ DEBUG_TAG=$(linuxkit_tag pkg/debug)$ARCH
 # our build easier. WARNING: it also means if you're
 # not logged into the Docker hub you may see final
 # images lacking functionality.
-ZTOOLS_TAG=${ZTOOLS_TAG:-$(plugin_tag zededa/ztools:0.14.0)}
+ZTOOLS_TAG=${ZTOOLS_TAG:-$(plugin_tag zededa/ztools:0.14.1)}
 
 sed -e "s#ZENBUILD_VERSION#"$ZENBUILD_VERSION"#" \
     -e "s#KERNEL_TAG#"$KERNEL_TAG"#" \

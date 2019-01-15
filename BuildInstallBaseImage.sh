@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ZEDEDA=$HOME/go/src/github.com/zededa
 ZCLI_ZEDEDA_PATH='/root/go/src/github.com/zededa'
 
@@ -68,22 +68,27 @@ docker build -t $TAG .
 cd $ZEDEDA/zenbuild
 echo "ZTOOLS_TAG=$TAG make rootfs.img"
 ZTOOLS_TAG=$TAG make rootfs.img
-IMAGE=`grep contents images/rootfs.yml | awk '{print $2}'`
-echo "IMAGE=$IMAGE"
 #contents: '0.0.0-fixes-6640a81b-dirty-2018-12-17.22.10-amd64'
 #IMAGE='0.0.0-6640a81b-dirty-2018-12-18.23.51-amd64'
+IMAGE=`grep contents images/rootfs.yml | awk '{print $2}'`
+echo "IMAGE=$IMAGE"
 
 echo "Start zcli container."
 # This looks-fori/starts a container named "zcli".
 zcliStatus=`docker ps -a --filter name=zcli --format "{{.Status}}"`
-if [[ "$zcliStatus" =~ "Up" ]]
-then
+echo "zcliStatus: $zcliStatus"
+if [ -z "$zcliStatus" ]; then
+   echo "zclistatus NULL. Start new zcli container."
+   docker pull zededa/zcli-dev:latest
+   docker run -v $HOME:/root -it --name zcli  zededa/zcli-dev:latest
+elif [[ $zcliStatus =~ "Up" ]]; then
    echo "zcli already running";
-elif [[ "$zcliStatus" =~ "Exited" ]]
+elif [[ $zcliStatus =~ "Exited" ]];
 then
    echo "zcli container not running. Restarting it."
    docker restart zcli
 else
+   echo "Start new zcli container."
    docker pull zededa/zcli-dev:latest
    docker run -v $HOME:/root -it --name zcli  zededa/zcli-dev:latest
 fi

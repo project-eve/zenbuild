@@ -3,7 +3,7 @@
 #
 #
 # [1] A poor man is a man on a deadline.
-#
+# 1.3.2
 
 get_git_tag() {
   git tag -l --points-at HEAD | grep '[0-9]*\.[0-9]*\.[0-9]*' | head -1

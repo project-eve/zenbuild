@@ -38,7 +38,7 @@ for t in $MISSING_TAGS ; do
       run linuxkit pkg push --disable-content-trust $LK_HASH_REL -build-yml build-dev.yml .
       run make docker-build docker-push
    elif [ $REPO = zenbuild ] ; then
-      run make ${TAG:+ZENIX_HASH=}$TAG ${HUMAN_TAG:+ZENIX_REL=}$HUMAN_TAG DEFAULT_PKG_TARGET=push pkgs zenix
+      run make ${HUMAN_TAG:+ZENIX_REL=}$HUMAN_TAG DEFAULT_PKG_TARGET=push pkgs zenix
    else
       run linuxkit pkg push --disable-content-trust $LK_HASH_REL .
    fi

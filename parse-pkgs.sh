@@ -129,7 +129,7 @@ DEBUG_TAG=$(linuxkit_tag pkg/debug)
 # our build easier. WARNING: it also means if you're
 # not logged into the Docker hub you may see final
 # images lacking functionality.
-ZTOOLS_TAG=zededa/ztools:1.4.1
+ZTOOLS_TAG=zededa/ztools:1.4.2
 LISP_TAG=zededa/lisp:1.4.0
 
 # Synthetic tags: the following tags are based on hashing

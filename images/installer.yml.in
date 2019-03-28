@@ -5,24 +5,31 @@ init:
   - GRUB_TAG
   - DTREES_TAG
   - XEN_TAG
-  - linuxkit/init:v0.3
-  - linuxkit/runc:v0.3
-  - linuxkit/getty:v0.3
+  - DOM0ZTOOLS_TAG
+  - linuxkit/init:v0.5
+  - linuxkit/runc:v0.5
+  - linuxkit/getty:v0.5
 onboot:
+  - name: rngd
+    image: RNGD_TAG
+    command: ["/sbin/rngd", "-1"]
   - name: installer
-    image: MKFLASH_TAG
-    command: ["/bin/sh", "-xc", "/make-flash /dev/sda ; sync ; sleep 5 ; sync ; poweroff -f"]
+    image: MKRAW_TAG
+    command: ["/install"]
     pid: host
     binds:
-      - /parts:/parts
+      - /run:/parts
+      - /bits:/bits
       - /dev:/dev
+      - /sys:/sys
+      - /:/hostfs
     capabilities:
       - all
 files:
-  - path: /parts/config.img
+  - path: /bits/config.img
     source: config.img
     mode: "0660"
-  - path: /parts/rootfs.img
+  - path: /bits/rootfs.img
     source: rootfs.img
     mode: "0660"
 trust:

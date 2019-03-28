@@ -1,12 +1,16 @@
+# pass HASH to parse-pkgs
 # disable content trust for now
 PATH := $(CURDIR)/../build-tools/bin:$(PATH)
-LINUXKIT_OPTS= --disable-content-trust
+LINUXKIT_OPTS= --disable-content-trust $(LINUXKIT_HASH)
+RESCAN_DEPS=FORCE
 
-PKGS = grub xen kernel xen-tools dnsmasq gpt-tools dom0-ztools	\
-	qrexec-lib qrexec-dom0 wwan wlan	\
+PKGS = grub xen kernel fw xen-tools dnsmasq strongswan gpt-tools dom0-ztools	\
+	qrexec-lib qrexec-dom0 wwan wlan rngd	\
 	watchdog \
+        guacd \
         device-trees \
-	zedctr mkconf mkrootfs-ext4 mkrootfs-squash mkflash mkimage-iso-efi
+        debug \
+	mkconf mkrootfs-ext4 mkrootfs-squash mkimage-raw-efi mkimage-iso-efi
 
 .PHONY: push force-push build forcebuild show-tag clean dockerfiles
 
@@ -29,6 +33,6 @@ clean:
 
 dockerfiles: $(addsuffix /Dockerfile, $(PKGS)/)
 
-%: %.in FORCE
+%: %.in $(RESCAN_DEPS)
 	(cd ..; ./parse-pkgs.sh pkg/$< > pkg/$@)
 FORCE:

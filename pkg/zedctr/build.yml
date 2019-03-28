@@ -3,9 +3,11 @@ org: zededa
 network: yes
 config:
   binds:
+    - /lib/modules:/lib/modules
     - /dev:/dev
     - /etc/resolv.conf:/etc/resolv.conf
     - /run:/run
+    - /var/config:/config
     - /var/log:/var/log/dom0
     - /:/hostfs
   net: host

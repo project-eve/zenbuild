@@ -28,16 +28,11 @@ RUN apk add \
     tar \
     xz \
     xz-dev \
-    zlib-dev
-
-# we need edge/testing for u-boot and libunwind-dev
-RUN (echo http://nl.alpinelinux.org/alpine/edge/main ;\
-     echo http://nl.alpinelinux.org/alpine/edge/testing) >> /etc/apk/repositories ;\
-    apk add --no-cache libunwind-dev uboot-tools
-
+    zlib-dev \
+    libunwind-dev
 
 ENV XEN_UBOOT_ADDR 0x81000000
-ENV XEN_VERSION 4.9.0
+ENV XEN_VERSION 4.11.0
 ENV XEN_SOURCE=https://downloads.xenproject.org/release/xen/${XEN_VERSION}/xen-${XEN_VERSION}.tar.gz
 
 # Download and verify xen
@@ -68,7 +63,8 @@ RUN make && \
         cp xen.gz /out/boot/xen.gz \
 	;; \
     aarch64) \
-        mkimage -A arm64 -T kernel -a $XEN_UBOOT_ADDR -e $XEN_UBOOT_ADDR -C none -d xen /out/boot/xen.uboot ;\
+        (cd /tmp ; wget -O - ftp://ftp.denx.de/pub/u-boot/u-boot-2018.09.tar.bz2 | tar xjf - ; cd u-boot-* ; make defconfig ; make tools-all) ;\
+        /tmp/u-boot-*/tools/mkimage -A arm64 -T kernel -a $XEN_UBOOT_ADDR -e $XEN_UBOOT_ADDR -C none -d xen /out/boot/xen.uboot ;\
         cp xen.efi /out/boot/ \
         ;; \
     esac

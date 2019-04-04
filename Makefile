@@ -125,35 +125,35 @@ installer-iso: $(INSTALLER_IMG).iso
 images/%.yml: build-tools pkg/zedctr parse-pkgs.sh images/%.yml.in FORCE
 	$(PARSE_PKGS) $@.in > $@
 
-$(CONFIG_IMG): conf/server conf/onboard.cert.pem conf/wpa_supplicant.conf conf/ | $(DIST)
+$(CONFIG_IMG): conf/server conf/onboard.cert.pem conf/wpa_supplicant.conf conf/ $(DIST)
 	./maketestconfig.sh $(CONF_DIR) $@
 
-$(ROOTFS_IMG): images/rootfs.yml | $(DIST)
+$(ROOTFS_IMG): images/rootfs.yml $(DIST)
 	./makerootfs.sh $< $(DIST) $(ROOTFS_FORMAT) $@
 	@[ $$(wc -c < "$@") -gt $$(( 250 * 1024 * 1024 )) ] && \
           echo "ERROR: size of $@ is greater than 250MB (bigger than allocated partition)" && exit 1 || :
 
-$(FALLBACK_IMG).img: $(FALLBACK_IMG).$(IMG_FORMAT) | $(DIST)
+$(FALLBACK_IMG).img: $(FALLBACK_IMG).$(IMG_FORMAT) $(DIST)
 	@rm -f $@ >/dev/null 2>&1 || :
 	ln -s $< $@
 
-$(FALLBACK_IMG).qcow2: $(FALLBACK_IMG).raw | $(DIST)
+$(FALLBACK_IMG).qcow2: $(FALLBACK_IMG).raw $(DIST)
 	qemu-img convert -c -f raw -O qcow2 $< $@
 	rm $<
 
-$(FALLBACK_IMG).raw: $(ROOTFS_IMG) $(CONFIG_IMG) | $(DIST)
+$(FALLBACK_IMG).raw: $(ROOTFS_IMG) $(CONFIG_IMG) $(DIST)
 	tar c $^ | ./makeflash.sh -C ${MEDIA_SIZE} $@
 
-$(ROOTFS_IMG)_installer.img: images/installer.yml $(ROOTFS_IMG) $(CONFIG_IMG) | $(DIST)
+$(ROOTFS_IMG)_installer.img: images/installer.yml $(ROOTFS_IMG) $(CONFIG_IMG) $(DIST)
 	./makerootfs.sh $< $(DIST) $(ROOTFS_FORMAT) $@
 	@[ $$(wc -c < "$@") -gt $$(( 300 * 1024 * 1024 )) ] && \
           echo "ERROR: size of $@ is greater than 300MB (bigger than allocated partition)" && exit 1 || :
 
-$(INSTALLER_IMG).raw: $(ROOTFS_IMG)_installer.img $(CONFIG_IMG) | $(DIST)
+$(INSTALLER_IMG).raw: $(ROOTFS_IMG)_installer.img $(CONFIG_IMG) $(DIST)
 	tar c $^ | ./makeflash.sh -C 350 $@ "efi imga conf_win"
 	rm $(ROOTFS_IMG)_installer.img
 
-$(INSTALLER_IMG).iso: images/installer.yml $(ROOTFS_IMG) $(CONFIG_IMG) | $(DIST)
+$(INSTALLER_IMG).iso: images/installer.yml $(ROOTFS_IMG) $(CONFIG_IMG) $(DIST)
 	./makeiso.sh $< $(DIST) $@
 
 zenix: ZENIX_HASH:=$(shell echo ZENIX_TAG | $(PARSE_PKGS) | sed -e 's#^.*:##' -e 's#-.*$$##')

@@ -135,7 +135,7 @@ $(ROOTFS_IMG): images/rootfs.yml $(DIST)
 
 $(FALLBACK_IMG).img: $(FALLBACK_IMG).$(IMG_FORMAT) $(DIST)
 	@rm -f $@ >/dev/null 2>&1 || :
-	ln -s $< $@
+	ln -s $(<F) $@
 
 $(FALLBACK_IMG).qcow2: $(FALLBACK_IMG).raw $(DIST)
 	qemu-img convert -c -f raw -O qcow2 $< $@

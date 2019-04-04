@@ -130,7 +130,7 @@ DEBUG_TAG=$(linuxkit_tag pkg/debug)
 # not logged into the Docker hub you may see final
 # images lacking functionality.
 ZTOOLS_TAG=$(immutable_tag ${ZTOOLS_TAG:-$(external_tag zededa/ztools $(linuxkit_tag pkg/debug))})
-LISP_TAG=$(immutable_tag ${LISP_TAG:-$(external_tag zededa/lisp)})
+LISP_TAG=zededa/lisp:2.1.1
 
 # Synthetic tags: the following tags are based on hashing
 # the contents of all the Dockerfile.in that we can find.

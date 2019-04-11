@@ -11,8 +11,11 @@ for i in `cd /sys/class/net ; echo eth*` ; do
   ethtool -K $i sg off
 done
 
-# For convenice's sake we're putting SSH inisde of a root container 
-/usr/sbin/sshd
+# constructing /run/authorized_keys from a static one and also
+# extracting key material from x509 certificates
+cp /config/authorized_keys /run
+bash -c 'ssh-keygen -f <(openssl x509 -in /config/onboard.cert.pem -pubkey -noout) -i -mPKCS8' >> /run/authorized_keys
+chmod 700 /run/authorized_keys
 
 # Need this for logrotate
 /usr/sbin/crond

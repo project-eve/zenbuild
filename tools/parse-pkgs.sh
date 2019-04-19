@@ -28,8 +28,8 @@ immutable_tag() {
   # we have to resolve symbolic tags like x.y.z or snapshot to something immutable
   # so that we can detect when the symbolic tag starts pointing a different immutable
   # object and thus trigger a new SHA for zenix and zedctr
-  echo $(docker inspect --format='{{index .RepoDigests 0}}' "$1" 2>/dev/null ||
-         docker inspect --format='{{.Id}}' "$1" 2>/dev/null ||
+  echo $(docker inspect --format='{{.Id}}' "$1" 2>/dev/null ||
+         docker inspect --format='{{index .RepoDigests 0}}' "$1" 2>/dev/null ||
          echo "$1")
 }
 
@@ -119,6 +119,7 @@ QREXECLIB_TAG=$(linuxkit_tag pkg/qrexec-lib)
 WWAN_TAG=$(linuxkit_tag pkg/wwan)
 WLAN_TAG=$(linuxkit_tag pkg/wlan)
 GUACD_TAG=$(linuxkit_tag pkg/guacd)
+LISP_TAG=$(linuxkit_tag pkg/lisp)
 GPTTOOLS_TAG=$(linuxkit_tag pkg/gpt-tools)
 WATCHDOG_TAG=$(linuxkit_tag pkg/watchdog)
 MKRAW_TAG=$(linuxkit_tag pkg/mkimage-raw-efi)
@@ -131,7 +132,6 @@ DEBUG_TAG=$(linuxkit_tag pkg/debug)
 # not logged into the Docker hub you may see final
 # images lacking functionality.
 ZTOOLS_TAG=$(immutable_tag ${ZTOOLS_TAG:-$(external_tag zededa/ztools $(linuxkit_tag pkg/debug))})
-LISP_TAG=zededa/lisp:latest
 
 # Synthetic tags: the following tags are based on hashing
 # the contents of all the Dockerfile.in that we can find.
